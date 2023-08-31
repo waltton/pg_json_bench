@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  prometheus:
+    image: prom/prometheus
+    command:
+      - '--web.listen-address=:9090'
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+    depends_on:
+      - pushgateway
+    ports:
+      - 9090:9090
+    volumes:
+      - ./docker/prometheus/prometheus.yml/:/etc/prometheus/prometheus.yml
+
+  pushgateway:
+    image: prom/pushgateway
+    command:
+      - '--web.listen-address=:9191'
+      - '--push.disable-consistency-check'
+      - '--persistence.interval=5m'
+    ports:
+      - 9191:9191
+
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - ./docker/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./docker/grafana/providers.yml:/etc/grafana/provisioning/dashboards/providers.yml
+      - ./docker/grafana/postgresql-benchmark-load.json:/var/lib/grafana/dashboards/postgresql-benchmark-load.json
+      - ./docker/grafana/postgresql-benchmark-query.json:/var/lib/grafana/dashboards/postgresql-benchmark-query.json
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
