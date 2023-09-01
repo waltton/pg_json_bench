@@ -13,6 +13,7 @@ wget https://raw.githubusercontent.com/algolia/datasets/master/movies/records.js
 
 ### Prepare the schema
 ```shell
+psql -c "create database test;"
 psql -d test < ./main.sql
 ```
 
