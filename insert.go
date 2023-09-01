@@ -104,11 +104,23 @@ func insert(db *sql.DB, tbls ...string) (err error) {
 	pFinishedAt.SetToCurrentTime()
 	p.Collector(pFinishedAt)
 
-	p.Grouping("run_ts", time.Now().Format("2006-01-02T15:04:05"))
+	runTS := time.Now().Format("2006-01-02T15:04:05")
+	p.Grouping("run_ts", runTS)
 
 	if err := p.Push(); err != nil {
 		return errors.Wrap(err, "fail to push metrics to gateway")
 	}
+
+	grafanaBaseURL := "http://localhost:3000"
+	queryDashboard := "b3a7d255-4083-4a5a-80be-da20613ccd60/postgresql-benchmark-load"
+
+	var tableParams string
+	for _, t := range tbls {
+		tableParams += "&var-table=tbl_" + t
+	}
+
+	murl := fmt.Sprintf("%s/d/%s?orgId=1&var-job=insert&var-run_ts=%s%s", grafanaBaseURL, queryDashboard, runTS, tableParams)
+	fmt.Printf("metrics are available on: %s\n", murl)
 
 	return nil
 }
