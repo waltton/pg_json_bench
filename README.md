@@ -1,5 +1,7 @@
 # pg_json_bench
 
+The goal of this project is to help to compare how different data types and indexes behaves with inserts and queries with json data.
+
 ### Spin up docker compose with monitoring stack
 ```shell
 docker compose up -d
