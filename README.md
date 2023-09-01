@@ -2,29 +2,32 @@
 
 The goal of this project is to help to compare how different data types and indexes behaves with inserts and queries with json data.
 
-### Spin up docker compose with monitoring stack
+After running the tests, pg_json_bench publishes the result to prometheus gateway and it is possible see the result on the prepared grafana dashboards.
+
+## Running
+**Spin up docker compose with monitoring stack**
 ```shell
 docker compose up -d
 ```
 
-### Prepare the data
+**Prepare the data**
 ```shell
 mkdir ./data
 wget https://raw.githubusercontent.com/algolia/datasets/master/movies/records.json -O ./data/records.json
 ```
 
-### Prepare the schema
+**Prepare the schema**
 ```shell
 psql -c "create database test;"
 psql -d test < ./main.sql
 ```
 
-### Build
+**Build**
 ```shell
 go build -o pg_json_bench
 ```
 
-### Run Benchmark
+**Run Benchmark**
 Example:
 ```shell
 DBCONN="dbname=test sslmode=disable" ./pg_json_bench query count_score_over_7 btree_idx_score,gin_idx,gin_idx_path
