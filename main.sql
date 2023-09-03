@@ -4,7 +4,7 @@ CREATE TABLE tbl_jsonb (data jsonb);
 
 
 CREATE TABLE tbl_btree_idx_score (data jsonb);
-CREATE INDEX ON tbl_btree_idx_score (CAST(data->>'score' AS FLOAT));
+CREATE INDEX ON tbl_btree_idx_score (CAST(data->>'score' AS FLOAT) ASC);
 
 CREATE TABLE tbl_gin_idx (data jsonb);
 CREATE INDEX ON tbl_gin_idx USING GIN (data);
