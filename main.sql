@@ -1,6 +1,12 @@
-CREATE TABLE tbl_text (data text);
-CREATE TABLE tbl_json (data json);
-CREATE TABLE tbl_jsonb (data jsonb);
+CREATE EXTENSION IF NOT EXISTS pg_tde;
+
+CREATE TABLE tbl_text (data text) USING heap;
+CREATE TABLE tbl_json (data json) USING heap;
+CREATE TABLE tbl_jsonb (data jsonb) USING heap;
+
+CREATE TABLE tbl_text_tde (data text) USING pg_tde;
+CREATE TABLE tbl_json_tde (data json) USING pg_tde;
+CREATE TABLE tbl_jsonb_tde (data jsonb) USING pg_tde;
 
 
 CREATE TABLE tbl_btree_idx_score (data jsonb);

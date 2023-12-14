@@ -34,6 +34,27 @@ var queryTmpls = map[string]map[string]string{
 		"count_year_2000_at_gt": "SELECT COUNT(*) FROM %s WHERE data @> '{\"year\": 2000}'",
 		"count_year_2000_eq":    "SELECT COUNT(*) FROM %s WHERE data->>'year' = '2000'",
 	},
+	"text_tde": {
+		"select_all":            "SELECT * FROM %s",
+		"score_over_7":          "SELECT * FROM %s WHERE CAST(CAST(data AS JSON)->>'score' AS FLOAT) > 7.0",
+		"count_score_over_7":    "SELECT '%s'", // skip
+		"count_year_2000_at_gt": "SELECT '%s'", // skip
+		"count_year_2000_eq":    "SELECT '%s'", // skip
+	},
+	"json_tde": {
+		"select_all":            "SELECT * FROM %s",
+		"score_over_7":          "SELECT * FROM %s WHERE CAST(data->>'score' AS FLOAT) > 7.0",
+		"count_score_over_7":    "SELECT COUNT(*) FROM %s WHERE CAST(data->>'score' AS FLOAT) > 7.0",
+		"count_year_2000_at_gt": "SELECT '%s'", // skip
+		"count_year_2000_eq":    "SELECT COUNT(*) FROM %s WHERE data->>'year' = '2000'",
+	},
+	"jsonb_tde": {
+		"select_all":            "SELECT * FROM %s",
+		"score_over_7":          "SELECT * FROM %s WHERE CAST(data->>'score' AS FLOAT) > 7.0",
+		"count_score_over_7":    "SELECT COUNT(*) FROM %s WHERE CAST(data->>'score' AS FLOAT) > 7.0",
+		"count_year_2000_at_gt": "SELECT COUNT(*) FROM %s WHERE data @> '{\"year\": 2000}'",
+		"count_year_2000_eq":    "SELECT COUNT(*) FROM %s WHERE data->>'year' = '2000'",
+	},
 	"btree_idx_score": {
 		"select_all":            "SELECT * FROM %s",
 		"score_over_7":          "SELECT * FROM %s WHERE CAST(data->>'score' AS FLOAT) > 7.0",
